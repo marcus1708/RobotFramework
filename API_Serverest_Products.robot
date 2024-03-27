@@ -5,9 +5,9 @@ Library     RequestsLibrary
 Resource   ../Resource/User_resource.robot
 Resource   ../Resource/Autenticacao_resource.robot
 Resource   ../Resource/Product_resource.robot
+Resource   ../Resource/Session_resource.robot
 
-
-Suite Setup      Criar Sessão
+Suite Setup      Criar Sessão      https://serverest.dev   
 Suite Teardown   Encerrar Sessão
 
 *** Variables ***
@@ -21,7 +21,7 @@ ${senha}         teste
     
 Teste Criaçao de Produto - Primeira Forma
 
-   ${user_id}  Criação de usuário
+   ${user_id}  Criação de usuário   ${user}
    ${token}  Autenticar Usuário  ${login}  ${senha}
    Log To Console  Este é um token válido--> ${token}
    ${product_id}  Criar Produto   ${token}  produto_1        201
