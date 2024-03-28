@@ -13,10 +13,11 @@ Suite Teardown   Encerrar Sessão
 
 ${login}    teste@teste.com
 ${senha}    teste
+&{user}     nome=MARCUS   email=teste@teste.com  password=teste   administrador=true 
 
 *** Test Cases ***
 Teste API - Login
 
    ${user_id}  Criação de usuário   ${user}
-   ${token}  Autenticar Usuário  ${login}  ${senha}
+   ${token}  Autenticar Usuário  ${user.email}  ${user.password}
    Deletar Usuário    user_id=${user_id} 
