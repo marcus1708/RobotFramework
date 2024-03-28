@@ -3,15 +3,10 @@
 *** Settings ***
 
 Library  RequestsLibrary
+Library  OperatingSystem
+Library  String
 
 *** Variables ***
-
-
-${URL}       https://serverest.dev     
-${DADOS}     {"nome": "MARCUS",
-...          "email": "teste@teste.com",
-...          "password": "teste",
-...          "administrador": "true"}    
 
 ${DADOS2}    {"nome": "MARCUS",
 ...          "email": "teste2@teste.com",
@@ -21,15 +16,24 @@ ${DADOS2}    {"nome": "MARCUS",
 *** Keywords ***
 
 Criação de usuário
-    ${header}        Create Dictionary  Content-Type=application/json  
+    [Arguments]   ${user} 
+    
+     ${body}  Get File  path=${EXECDIR}/Json/user_template.json
+
+    ${body}  Replace String Using Regexp  ${body}  _nome   ${user}[nome] 
+    ${body}  Replace String Using Regexp  ${body}  _email   ${user}[email]  
+    ${body}  Replace String Using Regexp  ${body}  _password   ${user}[password]  
+    ${body}  Replace String Using Regexp  ${body}  _administrador  ${user}[administrador]
+
+    ${header}        Create Dictionary   Content-Type=application/json  
 
     ${response}      POST On Session   alias=server_rest  url=/usuarios  headers=${header}
-    ...              data=${DADOS}     expected_status=201
+    ...              data=${body}      expected_status=201
+    
+    ${user_id}   Set Variable  ${response.json()['_id']}
 
-    ${user_id}       Set Variable     ${response.json()['_id']}
     Log To Console   ${user_id}
     [Return]         ${user_id}
-
 Buscar Usuário
     [Arguments]      ${user_id}
     ${response}      GET On Session   alias=server_rest    url=/usuarios/${user_id}   expected_status=200
@@ -47,8 +51,5 @@ Atualizar Usuário
     Log To Console   ${retorno_put}
 Deletar Usuário
     [Arguments]      ${user_id}
-    DELETE On Session                 alias=server_rest  url=/usuarios/${user_id}  expected_status=200
-Criar Sessão
-  Create Session    url=${URL}   alias=server_rest
-Encerrar Sessão
-  Delete All Sessions   
+    DELETE On Session    alias=server_rest  url=/usuarios/${user_id}  expected_status=200
+

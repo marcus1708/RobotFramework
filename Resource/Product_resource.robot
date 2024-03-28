@@ -73,7 +73,6 @@ Deletar Produto
     
     Log To Console   ${response.json()}
     Buscar Produto   ${auth_token}   ${product_id}  400
-###################################################################################################
 Criar Produto - 2
     
     [Arguments]   ${token}   ${file}   ${expected_status}

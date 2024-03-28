@@ -30,3 +30,4 @@ Teste Carrinho
    Deletar Carrinho / Cancelar Compra  ${token}   200
    Deletar Produto    ${token}   ${product_id}    
    Deletar Usuário    user_id=${user_id}  
+
