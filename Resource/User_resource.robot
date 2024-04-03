@@ -18,7 +18,7 @@ ${DADOS2}    {"nome": "MARCUS",
 Criação de usuário
     [Arguments]   ${user} 
     
-     ${body}  Get File  path=${EXECDIR}/Json/user_template.json
+    ${body}  Get File  path=${EXECDIR}/Json/user_template.json
 
     ${body}  Replace String Using Regexp  ${body}  _nome   ${user}[nome] 
     ${body}  Replace String Using Regexp  ${body}  _email   ${user}[email]  
